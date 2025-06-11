@@ -185,7 +185,7 @@ jobs:
             Run locally:
 
             ```bash
-            # Make sure git remote is ArchGPT/insomnium...
+            # Make sure git remote is lee-wiltbank/insomnium...
 
             git checkout main
             git merge --no-ff release/<replaced with version>
