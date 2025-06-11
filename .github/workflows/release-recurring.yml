@@ -32,21 +32,25 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: package-lock.json
 
       - name: Install packages
+        env:
+          NODE_OPTIONS: --max_old_space_size=6144
         run: npm ci
 
       - name: Bump version
         shell: bash
-        run: npm --workspaces version prerelease --preid="$(git rev-parse --short HEAD)${{ github.event_name == 'pull_request' && '.pr-$PR_NUMBER' || '' }}" --no-git-tag-version
+        run:
+          npm --workspaces version prerelease --preid="$(git rev-parse --short HEAD)${{ github.event_name ==
+          'pull_request' && '.pr-$PR_NUMBER' || '' }}" --no-git-tag-version
 
       - name: Package
         shell: bash
         run: NODE_OPTIONS='--max_old_space_size=6144' BUILD_TARGETS='${{ matrix.build-targets }}' npm run app-package
 
-      # come back here later to debug why backup folder is not created  
+      # come back here later to debug why backup folder is not created
       # - name: Test critical path on packaged electron app
       #   run: npm run test:package -w packages/insomnia-smoke-test -- --project=Critical
       #   env:
