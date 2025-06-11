@@ -37,19 +37,21 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install packages
+        env:
+          NODE_OPTIONS: --max_old_space_size=6144
         run: npm ci
 
       - name: Package app (MacOS only)
         if: matrix.os == 'macos-latest'
         shell: bash
-        run: npm run app-package
-        env:
-          NODE_OPTIONS: "--max_old_space_size=6144"
-          APPLE_ID: ${{ matrix.os == 'macos-latest' && secrets.DESIGNER_APPLE_ID || '' }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ matrix.os == 'macos-latest' && secrets.DESIGNER_APPLE_ID_PASSWORD || '' }}
-          CSC_LINK: ${{ matrix.csc_link_secret != '' && secrets[matrix.csc_link_secret] || '' }}
-          CSC_KEY_PASSWORD:
-            ${{ matrix.csc_key_password_secret != '' && secrets[matrix.csc_key_password_secret] || ''  }}
+        run: NODE_OPTIONS='--max_old_space_size=6144' npm run app-package
+        # env:
+        #   NODE_OPTIONS: "--max_old_space_size=6144"
+        #   APPLE_ID: ${{ matrix.os == 'macos-latest' && secrets.DESIGNER_APPLE_ID || '' }}
+        #   APPLE_APP_SPECIFIC_PASSWORD: ${{ matrix.os == 'macos-latest' && secrets.DESIGNER_APPLE_ID_PASSWORD || '' }}
+        #   CSC_LINK: ${{ matrix.csc_link_secret != '' && secrets[matrix.csc_link_secret] || '' }}
+        #   CSC_KEY_PASSWORD:
+        #     ${{ matrix.csc_key_password_secret != '' && secrets[matrix.csc_key_password_secret] || ''  }}
 
       - name: Package app (Windows and Linux)
         if: matrix.os != 'macos-latest'
@@ -183,7 +185,7 @@ jobs:
             Run locally:
 
             ```bash
-            # Make sure git remote is ArchGPT/insomnium...
+            # Make sure git remote is lee-wiltbank/insomnium...
 
             git checkout main
             git merge --no-ff release/<replaced with version>

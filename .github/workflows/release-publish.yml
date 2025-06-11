@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: package-lock.json
 
       - name: Install packages
@@ -77,7 +77,6 @@ jobs:
       #   run:
       #     echo "INSO_VERSION=$(jq .version packages/insomnia-inso/package.json -rj)" >> $GITHUB_ENV
 
-   
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
         id: core_tag_and_release
@@ -201,12 +200,12 @@ jobs:
         with:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
 
-      - name: Merge git branch into main
-        run: |
-          remote_repo="https://${GITHUB_ACTOR}:${RELEASE_GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git checkout main
-          git merge --no-ff ${{ env.RELEASE_BRANCH }}
-          git status
-          git push "${remote_repo}"
-        env:
-          RELEASE_GH_TOKEN: ${{ secrets.RELEASE_GH_TOKEN }}
+      # - name: Merge git branch into main
+      #   run: |
+      #     remote_repo="https://${GITHUB_ACTOR}:${RELEASE_GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+      #     git checkout main
+      #     git merge --no-ff ${{ env.RELEASE_BRANCH }}
+      #     git status
+      #     git push "${remote_repo}"
+      #   env:
+      #     RELEASE_GH_TOKEN: ${{ secrets.RELEASE_GH_TOKEN }}
