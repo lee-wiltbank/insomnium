@@ -37,6 +37,8 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install packages
+        env:
+          NODE_OPTIONS: --max_old_space_size=6144
         run: npm ci
 
       - name: Package app (MacOS only)
